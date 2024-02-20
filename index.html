@@ -1,11 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle</title>
+    <link rel="stylesheet" href="varieble.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
+    <header>
+        <h1>Wordle</h1>
+        <button id="toggle-mode">sun/moon</button>
+    </header>
+    <div id="game">
+        <div id="wordle-grid"></div>
+            <div id="L-1-1" class="letter correct">a</div>
+            <div class="letter wrong">b</div>
+            <div class="letter misplaced">c</div>
+            <div class="letter">d</div>
+            <div class="letter">e</div>
+    </div>
+
+    <script src="toggle-dark-mode.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
