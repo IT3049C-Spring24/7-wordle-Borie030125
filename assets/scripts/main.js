@@ -51,7 +51,7 @@ async function setRandomWordAsTarget() {
         if (!response.ok) throw new Error('Failed to fetch the word.');
         const data = await response.json();
         gameState.wordToGuess = data.word.toLowerCase();
-        console.log("Target word set to:", gameState.wordToGuess); // For debugging
+        console.log("Target word set to:", gameState.wordToGuess); 
     } catch (error) {
         console.error("Error setting random word as target:", error);
     }
@@ -68,25 +68,38 @@ document.addEventListener('keydown', async (event) => {
         addLetterToBox(gameState.currentAttempt, gameState.currentPosition, '');
     } else if (event.key === 'Enter') {
         if (gameState.currentGuess.length === gameConfig.cols) {
-            const isValid = await isWordValid(gameState.currentGuess);
-            if (isValid) {
-                console.log('Valid word');
-                if (gameState.currentGuess === gameState.wordToGuess) {
-                    console.log('You guessed the word');
-                } else {
-                    console.log('Incorrect guess,word is', gameState.wordToGuess);
-                }
-            } else {
-                console.log('Invalid word');
-            }
+            checkAndDisplayGuess();
         } else {
-            console.log('Word not complete');
+            console.log('Incomplete guess');
         }
-        gameState.currentAttempt++;
-        gameState.currentPosition = 0;
-        gameState.currentGuess = '';
     }
 });
+
+async function checkAndDisplayGuess() {
+    const guess = gameState.currentGuess.toLowerCase();
+    const correctWord = gameState.wordToGuess.toLowerCase();
+    for (let i = 0; i < guess.length; i++) {
+        const cell = document.getElementById(`L-${gameState.currentAttempt}-${i}`);
+        if (guess[i] === correctWord[i]) {
+            cell.classList.add('correct');
+        } else if (correctWord.includes(guess[i])) {
+            cell.classList.add('misplaced');
+        } else {
+            cell.classList.add('wrong');
+        }
+    }
+
+    // Prepare for the next guess
+    gameState.currentAttempt++;
+    gameState.currentPosition = 0;
+    gameState.currentGuess = '';
+
+    // Check for end of game conditions
+    if (gameState.currentAttempt >= gameConfig.rows) {
+        console.log('Game Over. The correct word was:', gameState.wordToGuess);
+        // Optionally, implement game over logic here
+    }
+}
 
 async function initializeGame() {
     setupGrid();
